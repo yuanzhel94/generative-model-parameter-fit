@@ -1,7 +1,7 @@
 % This script estimates the sample sizes required for an expected
 % between-group differences in eta or gamma. Or do the reverse estimation.
-% This is achieved using the individual variation in estiamtes for the
-% HCP-YA cohort (std)
+% This is achieved using the individual variation in estiamtes for the HCP-YA cohort (std)
+% Use limited to connectome mapped to the Desikan Killiany atals, 10% network density on average, and generative algorithms initiated without seed connections.
 load('sample_size_estimate_data.mat');
 Power = 0.8;
 T=norminv(1-0.025);
