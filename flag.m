@@ -1,4 +1,4 @@
-function b = generative_model_with_sequence(A,D,m,params,epsilon)
+function b = flag(A,D,m,params,epsilon)
 % matching index model, connections ordered by formation sequence (to enable dependent network strategy)
 % warning: dependency on Brain Connectivity Toolbox
 % modified based on the work Betzel et al (2016)

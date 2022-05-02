@@ -1,14 +1,16 @@
 tic;
 %warning: dependency on Brain Connectivity Toolbox
 % this is an toy example demonstrating the use of dependent network strategy
-% generate 2x2 energy landscapes for 2 subjects using dependent network strategy
+% generate 10x10 energy landscapes for 2 subjects using dependent network strategy
 n = 84; %84x84 Desikan Killiany atlas
 s = zeros(84); %initiate generative algorithm without seed connections
 n_var = 10; % number of parameter sampling along each parameter dimension, n_var = 100 used for the present work
-eta = linspace(-7,-2,n_var);
-gam = linspace(0,1,n_var);
-load('dependent_network_strategy_data.mat','c'); % empirical networks for 2 subjects, number of connections m1 = 326, m2 = 355.
-load('dependent_network_strategy_data.mat','D'); % inter-regional distance matrix of Desikan Killiany atlas
+% eta = linspace(-7,2,n_var);
+eta = linspace(-3.6,0.1,n_var);
+% gam = linspace(0,1,n_var);
+gam = linspace(0.35,0.6,n_var);
+load('flag_data.mat','c'); % empirical networks for 2 subjects, number of connections m1 = 326, m2 = 355.
+load('flag_data.mat','D'); % inter-regional distance matrix of Desikan Killiany atlas
 m = 355; %max(m1,m2)
 
 networks = zeros(m,n_var,n_var);
@@ -17,7 +19,7 @@ for i=1:n_var
     for j=1:n_var
         this_gam = gam(j);
         params = [this_eta,this_gam];
-        b = generative_model_with_sequence(s,D,m,params);
+        b = flag(s,D,m,params);
         networks(:,j,i) = b;
     end
 end
@@ -64,8 +66,24 @@ end
 %visualize the energy landscape for selected subjects
 figure;imshow(squeeze(Energy(:,:,1)),'InitialMagnification',1600);colormap(jet);colorbar; axis square;
 figure;imshow(squeeze(Energy(:,:,2)),'InitialMagnification',1600);colormap(jet);colorbar; axis square;
-%clearly see dependency between energy landscapes of the two individuals using dependent network strategy.
+%clearly see dependency between energy landscapes of the two individuals using FLaG.
+%this is because the optimal parameters the resolution of 10x10 parameter landscape is too coarse
 %but we show its effects on parameter estimation is limited when the resolution of energy
-%landscapes are large (more sampling points) and using the Average Landscapes method (large K)
+%landscapes are large (more sampling points) and using the multi-landscapes method (large K)
 toc;
 
+function kstat = fcn_ks(x1,x2) %adapted from Betzel et al (2016).
+binEdges    =  [-inf ; sort([x1;x2]) ; inf];
+
+binCounts1  =  histc (x1 , binEdges, 1);
+binCounts2  =  histc (x2 , binEdges, 1);
+
+sumCounts1  =  cumsum(binCounts1)./sum(binCounts1);
+sumCounts2  =  cumsum(binCounts2)./sum(binCounts2);
+
+sampleCDF1  =  sumCounts1(1:end-1);
+sampleCDF2  =  sumCounts2(1:end-1);
+
+deltaCDF  =  abs(sampleCDF1 - sampleCDF2);
+kstat = max(deltaCDF);
+end
