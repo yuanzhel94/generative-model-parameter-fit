@@ -12,6 +12,9 @@ gam = linspace(0.35,0.6,n_var);
 load('flag_data.mat','c'); % empirical networks for 2 subjects, number of connections m1 = 326, m2 = 355.
 load('flag_data.mat','D'); % inter-regional distance matrix of Desikan Killiany atlas
 m = 355; %max(m1,m2)
+modeltype = "matching";
+modelvar = {"powerlaw","powerlaw"};
+
 
 networks = zeros(m,n_var,n_var);
 for i=1:n_var
@@ -19,7 +22,7 @@ for i=1:n_var
     for j=1:n_var
         this_gam = gam(j);
         params = [this_eta,this_gam];
-        b = flag(s,D,m,params);
+        b = flag(s,D,m,modeltype,modelvar,params);
         networks(:,j,i) = b;
     end
 end

@@ -21,9 +21,9 @@ eta_delta = (T-norminv(1-Power)) * eta_sigma /sqrt(samp);
 gam_delta = (T-norminv(1-Power)) * gam_sigma /sqrt(samp);
 
 
-%PART2
-%estimate minimum sample size to resolve a given delta in eta or gamma
-eta_delta = 0.028;
-samp1 = ((T-norminv(1-Power))*eta_sigma/eta_delta)^2;
-gam_delta = 0.0037;
-samp2 = ((T-norminv(1-Power))*gam_sigma/gam_delta)^2;
+% %PART2
+% %estimate minimum sample size to resolve a given delta in eta or gamma
+% eta_delta = 0.028;
+% samp1 = ((T-norminv(1-Power))*eta_sigma/eta_delta)^2;
+% gam_delta = 0.0037;
+% samp2 = ((T-norminv(1-Power))*gam_sigma/gam_delta)^2;
