@@ -1,16 +1,26 @@
-function b = flag(A,D,m,modeltype,modelvar,params,epsilon)
-% GENERATIVE_MODEL          Run generative model code
+function b = generate_connections(A,D,m,modeltype,modelvar,params,epsilon)
+% b = generate_connections(A,D,m,modeltype,modelvar,params,epsilon)
 %
-%   B = GENERATIVE_MODEL(A,D,m,modeltype,modelvar,params)
+%   Generate networks using the models described in Betzel et al. (2016)
 %
-%   Generates synthetic networks using the models described in the study by
-%   Betzel et al (2016) in Neuroimage.
+%   Function modified from the "generative_model" function in Brain Connectivity 
+%   toolbox by Betzel et al (2016). Modifications are labelled with
+%   comments in the function.
 %
-%   Inputs:
+%   The connection index returned by the present function is ordered by
+%   their generated sequence, distinguished from the original function
+%   where connection are not necessarily returned in the generation order.
+%
+%   This feature is to enable Fast Landscape Generation (FLaG) by setting
+%   the function input m (see below) to the maximum number of connections in 
+%   individual connectomes in the evaluated dataset.
+%
+%   Inputs (same as the original function):
 %           A,          binary network of seed connections
 %           D,          Euclidean distance/fiber length matrix
 %           m,          number of connections that should be present in
-%                       final synthetic network
+%                       final synthetic network (to enable FLaG, set as the
+%                       maximum number for the dataset)
 %           modeltype,  specifies the generative rule (see below)
 %           modelvar,   specifies whether the generative rules are based on
 %                       power-law or exponential relationship
@@ -21,12 +31,11 @@ function b = flag(A,D,m,modeltype,modelvar,params,epsilon)
 %           epsilon,    the baseline probability of forming a particular
 %                       connection (should be a very small number
 %                       {default = 1e-5}).
-%
 %   Output:
-%           B,          m x number of networks matrix of connections
+%           b,          m x number of networks matrix of connections, each
+%                       column is a network.
 %
-%
-%   Full list of model types:
+%   Full list of model types (same as original function):
 %   (each model type realizes a different generative rule)
 %
 %       1.  'sptl'          spatial model
@@ -43,40 +52,6 @@ function b = flag(A,D,m,modeltype,modelvar,params,epsilon)
 %       12. 'deg-diff'      difference in degree
 %       13. 'deg-prod'      product of degree
 %
-%
-%   Example usage:
-%
-%       load demo_generative_models_data
-%
-%       % get number of bi-directional connections
-%       m = nnz(A)/2;
-% 
-%       % get cardinality of network
-%       n = length(A);
-% 
-%       % set model type
-%       modeltype = 'neighbors';
-% 
-%       % set whether the model is based on powerlaw or exponentials
-%       modelvar = [{'powerlaw'},{'powerlaw'}];
-% 
-%       % choose some model parameters
-%       params = [-2,0.2; -5,1.2; -1,1.5];
-%       nparams = size(params,1);
-% 
-%       % generate synthetic networks
-%       B = generative_model(Aseed,D,m,modeltype,modelvar,params);
-%
-%       % store them in adjacency matrix format
-%       Asynth = zeros(n,n,nparams);
-%       for i = 1:nparams; 
-%           a = zeros(n); a(B(:,i)) = 1; a = a + a'; 
-%           Asynth(:,:,i) = a; 
-%       end
-%
-%   Reference: Betzel et al (2016) Neuroimage 124:1054-64.
-%
-%   Richard Betzel, Indiana University/University of Pennsylvania, 2015
 
 if ~exist('epsilon','var')
     epsilon = 1e-5;
