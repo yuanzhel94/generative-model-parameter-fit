@@ -17,7 +17,7 @@ This repo includes codes to perform FLaG(Fast landscape generation)-implemented 
         energy_from_flag.m:         function that compute the energy of a FLaG landscape networks against a group of population.
         network_topo.m:             function returns the four topological distributions of interest (i.e., k, c, b, e) for given networks.
         fcn_ks.m:                   function compute the ks statistics from two topological distributions (copy from Betzel et al (2016)).
-        fcn_voronoi_select.m:       function that select parameters for Voronoi Tessellation search (copy from Betzel et al (2016)).
+        fcn_voronoi_select.m:       function that select parameters for Voronoi Tessellation search (copy from Betzel et al (2016)). Not used in the grid FLaG. Included for future implementation of FLaG to Voronoi tessellation.
 
 3. **multilandscape_estimate.m:**
 
@@ -25,7 +25,7 @@ This repo includes codes to perform FLaG(Fast landscape generation)-implemented 
 
 4. **demo.m:**
 
-    This is a demo code illustrate the use of flag_search.m function to perform FLaG-implemented parameter estimation.
+    This is a demo code illustrate the use of flag_search.m and multilandscape_estimate.m functions to perform FLaG-implemented parameter estimation.
 		
 5. **demo_data.mat:**
 
